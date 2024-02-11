@@ -1,0 +1,146 @@
+﻿@model Ecommerce_project_1.Models.ViewModel.ShoppingCartVM
+<form method="post" >
+
+    <br />
+    <div class="backgroundWhiteBorder">
+        <div class="container">
+            <div class="card">
+                <div class="  card-header bg-dark text-light ml-0 row container">
+                    <div class="col-6">
+                        <i class="fa fa-shopping-cart"></i> &nbsp;
+                        Shopping Cart
+                    </div>
+                    <div class="col-6 text-right">
+                        <a asp-action="Index" asp-controller="Home" class="btn btn-outline-info btn-sm">Continue Shopping</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                   @{
+                        int i = 0;}
+
+                    
+                    @foreach (var item in Model.ListCart)
+                    {
+                        var total = item.Price * item.Count;
+
+                    <div class="row">
+                            
+                            <input type="checkbox" name="IsChecked" value="@item.Product.Id" checked >
+                        <div class="d-none d-lg-block col-lg-1 text-center py-2">
+                            <img src="@item.Product.ImageUrl" class="rounded" width="100%" />
+                        </div>
+                        <div class="col-12 text-sm-center col-lg-6 text-lg-left">
+                            <h5><strong>@item.Product.Title</strong></h5>
+                            <p><small>@Html.Raw( item.Product.Description)</small></p>
+                        </div>
+                        <div class="col-12 text-sm-center col-lg-5 text-lg-right row">
+                            <div class="col-4 text-md-right" style="padding-top:5px;">
+                                <h6><strong>@item.Price<span class="text-muted">x</span>@item.Count = @total </strong></h6>
+                            </div>
+                            <div class=" row  col-sm-4 col-lg-6">
+                                <div class="col-2 float-right mx-1">
+                                        <button type="submit"  asp-action="Increment" asp-route-id="@item.Id" class=" btn btn-primary"  >
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="col-2 float-right mx-1">
+                                        <button type="submit" asp-action="Decrement" asp-route-id="@item.Id" class="btn btn-danger">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-2 col-sm-4 col-lg-2 text-right">
+                                    <button type="submit" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        </div>
+                        i++;
+                    }
+                    <hr />
+                    
+                    <div class="row">
+                        <div class="col-12 col-md-6 offset-md-6 col-lg-4 offset-lg-8 pr-4">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between bg-light">
+                                    <span class="text-info"> Total (Rs)</span>
+                                    <strong class="text-info"> <span id="txtOrderTotal">@Model.OrderHeader.OrderTotal Rs</span></strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="card-footer row">
+                        @if(!Model.OrderHeader.ApplicationUser.EmailConfirmed)
+                        {
+                            <div class="col-8 @ViewBag.EmailCSS">
+                                @ViewBag.EmailMessage
+                                </div>
+                            <div class="col-4">
+                                <button type="submit" asp-action="IndexPost" class="btn btn-outline-warning">Click Here to Send Confirmation Mail</button>
+                            </div>
+
+                        }
+                        else
+                        {
+                            
+                        <div class="col-sm-12 col-lg-4 col-md-6 offset-lg-8 offset-md-6 ">
+
+                            <button type="submit" asp-action="Summary" asp-controller="Cart" asp-area="Customer"  class="btn btn-success form-control">Summary</button>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function submitForm(event) {
+            event.preventDefault(); // Form submission rokne ke liye
+
+            var actionType = event.target.getAttribute("name");
+
+            if (actionType === "VerifyEmail") {
+                // VerifyEmail button ke liye AJAX call
+                $.ajax({
+                    url: '/Customer/Cart/VerifyEmailAjax', // Aapke controller ke URL ko sahi se update karein
+                    type: 'POST',
+                    success: function (data) {
+                        // Yahan aap success ke baad kuch aur actions le sakte hain
+                        if (data.success) {
+                            // SweetAlert for success
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Email Verification Sent',
+                                text: data.message,
+                                confirmButtonColor: '#28a745'
+                            });
+                        } else {
+                            // SweetAlert for error
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Error in email verification: ' + data.message,
+                                confirmButtonColor: '#dc3545'
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        // SweetAlert for generic error
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred during email verification.',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    }
+                });
+
+            }
+        }
+    </script>
+
+</form>
+   

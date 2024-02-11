@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Ecommerce_project_1.Models.Product>
+<link rel="stylesheet" href="~/css/new.css" />
+
+
+    <form asp-area="Customer" asp-controller="Home" asp-action="Index">
+@*
+    <div class="container">
+
+        <input  type="search">
+        <button type="submit" class="btn btn-info">
+            <span class="material-symbols-outlined">
+                search
+            </span>
+        </button>
+        </div>*@
+
+ <div class="input-group">
+  <div id="search-autocomplete" class="form-outline" data-mdb-input-init>
+   <input type="search" id="form1" class="form-control" placeholder="Search" name="search" />
+  </div>
+  <button type="submit" class="btn btn-primary" data-mdb-ripple-init>
+    <i class="fas fa-search"></i>
+  </button>
+</div>
+</form>
+<br />
+
+
+ <div class="row m-2 p-2">
+@foreach (var item in Model)
+{
+
+      <div class="card m-2">
+      <div class="circle"></div>
+      <div class="content">
+        <h4>@item.Title</h4>
+        <h6 class="text-primary m-2">By @item.Author</h6>
+        <br>
+                <h4>List Price : <strike>₹@item.ListPrice</strike></h4>
+                <h4 class="text-danger m-3">As Low as : ₹@item.Price</h4>
+                <a href="/Customer/Home/Details/@item.Id" class="bg-primary text-light">
+                    <span class="material-symbols-outlined">
+                        quick_reference
+                    </span>Details
+                </a>
+        
+      </div>
+      <img
+        src="@item.ImageUrl" width="200" height="200"/>
+ </div>
+}
+ </div>

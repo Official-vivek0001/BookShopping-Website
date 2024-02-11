@@ -1,0 +1,114 @@
+﻿@model IEnumerable<Ecommerce_project_1.Models.OrderDetail>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recent Order Details</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h2 {
+            color: #004080;
+        }
+
+        .order-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .product-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 20px;
+        }
+
+        .product-image {
+            max-width: 100px;
+            border-radius: 5px;
+            margin-right: 20px;
+        }
+
+        .product-details {
+            flex: 1;
+        }
+
+            .product-details p {
+                margin: 5px 0;
+                color: #555;
+            }
+
+        .buy-again-button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+            .buy-again-button:hover {
+                background-color: #45a049;
+            }
+
+        p.no-order-message {
+            color: #555;
+        }
+
+        .checkbox-container {
+            margin-top: 10px;
+        }
+
+        .product-checkbox {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="order-container">
+        <h2>Recent Order Details</h2>
+        @if (Model.Any())
+        {
+            <form method="post" action="RecentOrder/buyagain">
+
+                @Html.AntiForgeryToken()
+                @foreach (var orderDetail in Model)
+                {
+                    <div class="product-container">
+                        <input type="checkbox" class="product-checkbox" name="selectedItems" value="@orderDetail.ProductId" />
+                        <img class="product-image" src="@orderDetail.Product.ImageUrl" alt="Product Image" />
+                        <div class="product-details">
+                            <p><strong>Title:</strong> @orderDetail.Product.Title</p>
+                            <p><strong>Price:</strong> $@orderDetail.Product.Price</p>
+                            <p><strong>Author:</strong> @orderDetail.Product.Author</p>
+                            <!-- Add other product details as needed -->
+                        </div>
+                    </div>
+                }
+
+                <button type="submit" class="buy-again-button">Buy It Again</button>
+            </form>
+        }
+        else
+        {
+            <p class="no-order-message">No recent order available.</p>
+        }
+    </div>
+</body>
+</html>

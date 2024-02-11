@@ -1,0 +1,75 @@
+﻿@model Ecommerce_project_1.Models.Cart
+<link rel="stylesheet" href="~/css/style.css" />
+<form method="post">
+    <input type="hidden" asp-for="ProductId"/>
+<div class="row">
+    <div class="col-6">
+        <img src="@Model.Product.ImageUrl" width="500" height="700" />
+    </div>
+    <div class="col-6">
+        <div class="row">
+            <h2 class="text-dark">@Model.Product.Title</h2>
+            <div class="col-4">
+
+            <h5 class="text-primary"> by @Model.Product.Author</h5>
+            </div>
+             <div class=" offset-3 col-5">
+                @* <span class="badge badge-danger">@Model.Product.Category.Name</span>
+                 <span class="badge badge-success">@Model.Product.CoverType.Name</span>*@
+            </div>
+
+
+        <br />
+        <br />
+            <h5>ISBN : @Model.Product.ISBN</h5>
+            <h5>List Price : <strike>@Model.Product.ListPrice Rs</strike></h5>
+        <br />
+        <div class="row rounded border m-2 p-2">
+        <div class="col-3">
+                <h5>Quantity</h5>
+        </div>
+            <div class="col-3">
+                <h5>1-49</h5>
+            </div>
+            <div class="col-3">
+                <h5>49-99</h5>
+            </div>
+            <div class="col-3">
+                <h5>100+</h5>
+            </div>
+             <div class="col-3">
+             <h5 class="text-danger">Price</h5>
+        </div>
+            <div class="col-3">
+                        <h5 class="text-danger">@Model.Product.Price Rs</h5>
+            </div>
+            <div class="col-3">
+                    <h5 class="text-danger">@Model.Product.Price50 Rs</h5>
+            </div>
+            <div class="col-3">
+                    <h5 class="text-danger">@Model.Product.Price100 Rs</h5>
+           
+            </div> 
+            </div> 
+            <br />
+            <br />
+            <h5>@Html.Raw(Model.Product.Description)</h5>
+            <br />
+            <div class="col-4">
+                <h4 class="text-primary"><i>Count</i> :-</h4>
+            </div>
+            <div class="col-8">
+             <input class="form-control" asp-for="@Model.Count" />
+            </div>
+            <br />
+            <br />
+            <br />
+            <button type="submit"  class="btn btn-dark text-light form-control rounded-5" >Add To Cart</button>
+            <br />
+            
+            <a  asp-action="Index" class="btn btn-light text-dark form-control rounded-5">Back To List</a>
+
+        </div>
+    </div>
+</div>
+</form>

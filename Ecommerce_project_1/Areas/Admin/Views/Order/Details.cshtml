@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Ecommerce_project_1.Models.ViewModel.OrderDetails>
+
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h2>Order Details</h2>
+
+<div class="table table-bordered">
+    <table class="table table-bordered table-active table-hover">
+        <thead>
+            <tr>
+                <th>Order Id</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.OrderID</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.Price</td>
+                    <td>@item.Quantity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<br />
+<div class="row mt-3">
+    <div class="col-6">
+        <a href="@Url.Action("CancelOrder", "Order", new { Id = Model.First().OrderID })" class="btn btn-danger btn-block">Cancel Order</a>
+    </div>
+    <div class="col-6">
+        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#dispatchModal">Dispatch Order</button>
+    </div>
+</div>
+
+<!-- Modal for Dispatch Details -->
+<div class="modal fade" id="dispatchModal" tabindex="-1" role="dialog" aria-labelledby="dispatchModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dispatchModalLabel">Dispatch Order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Dispatch details form -->
+                <form id="dispatchForm">
+                    <div class="form-group">
+                        <label for="trackingNumber">Tracking Number:</label>
+                        <input type="text" class="form-control" id="trackingNumber" name="trackingNumber" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="carrierService">Carrier Service:</label>
+                        <input type="text" class="form-control" id="carrierService" name="carrierService" required />
+                    </div>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveDispatchDetails()">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function saveDispatchDetails() {
+    var orderId = '@Model.First().OrderID'; // Assuming OrderID is an integer
+    var trackingNumber = $('#trackingNumber').val();
+    var carrierService = $('#carrierService').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '@Url.Action("DispatchOrder", "OrderManagement","Admin")',
+        contentType: 'application/json; charset=utf-8', // Add this line
+        data: JSON.stringify({Id: orderId, trackingNumber: trackingNumber, Carrier: carrierService }), // Use JSON.stringify
+                success: function (result) {
+                    alert(result.message); // Display the success message
+                    $('#dispatchModal').modal('hide');
+                },
+                error: function (xhr) {
+                    alert('Error dispatching order. Please try again. ' + xhr.responseText);
+                }
+    });
+}
+    </script>
+}

@@ -1,0 +1,28 @@
+﻿<div class="row">
+    <div class="col-4">
+        <h2 class="text-light text-center bg-success">Companies List</h2>
+    </div>
+    <div class=" offset-4 col-4">
+        <a asp-action="Upsert" class="btn btn-dark form-control"><i  class="fas fa-plus">&nbsp;Add New Company</i></a>
+    </div>
+    <div class="container rounded border m-2 p-2">
+       <table id="tblData" class="table table-bordered table-hover table-striped">
+           <thead>
+               <tr>
+                   <th>Name</th>
+                   <th>Street Address</th>
+                   <th>City</th>
+                   <th>State</th>
+                   <th>Postal Code</th>
+                   <th>Phone Number</th>
+                   <th>Is Authorized</th>
+                   <th>Actions</th>
+               </tr>
+           </thead>
+       </table>
+    </div>
+    </div>
+
+@section Scripts{
+    <script src="~/js/Company.js"></script>
+}

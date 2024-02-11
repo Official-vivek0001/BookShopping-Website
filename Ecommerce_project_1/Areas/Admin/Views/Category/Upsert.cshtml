@@ -1,0 +1,37 @@
+﻿@model Category
+@{
+    ViewData["Title"] = "Upsert";
+    var title = Model.Id != 0 ? "Edit Category" : "New Category";
+    var button = Model.Id != 0 ? "Update" : "Save";
+}
+<form method="post">
+        <div class="col-10 border-bottom">
+    <h2 class="text-success">@title</h2>
+        </div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        
+    <div class="form-group row m-2 p-2">
+        <div class="col-4">
+            <label asp-for="@Model.Name"></label>
+        </div>
+            <div class="col-8 ">
+                <input asp-for="@Model.Name" class="form-control" />
+            <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            
+        </div>
+        </div>
+    
+    @if (Model.Id != 0)
+    {
+        <partial name="_UpsertButtonEdit"/>
+    }
+    else
+    {
+        <partial name="_UpsertButtonNew"/>    
+    }
+</form>
+@section Scripts{
+    
+}
+
+

@@ -1,0 +1,24 @@
+﻿q
+<div class="row">
+    <div class="col-4 bg-success rounded-3 border-3">
+        <h2 class="text-light     text-center">Category List</h2>
+    </div>
+    <div class="offset-5 col-3">
+        <a asp-action="Upsert" class="btn btn-dark form-control"><i class="fas fa-plus">&nbsp;NEW CATEGORY</i></a>
+    </div>
+    <div class="form-group rounded border m-2 p-2">
+        <table id="tblData" class="table table-hover table-active table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/Category.js"></script>
+}
